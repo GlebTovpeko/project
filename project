@@ -11,8 +11,6 @@ import os
 class BotCommand:
     def __init__(self, bot):
         self.bot = bot
-    def execute(self, message):
-        raise NotImplementedError("Подклассы должны реализовать метод execute()")
 
 # Команды
 class StartCommand(BotCommand):
@@ -202,6 +200,6 @@ class HabitBot:
 
 
 if __name__ == "__main__":
-    API_TOKEN = 'YOUR_BOT_TOKEN'  # Замените на ваш токен
+    API_TOKEN = '8045104104:AAE0vLwZQg0Z4JAaSrfP2Ge2zLnE_E-8vfw'
     bot = HabitBot(API_TOKEN)
     bot.run()
