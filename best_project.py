@@ -1,4 +1,3 @@
-
 import telebot
 from telebot import types
 from datetime import datetime, timedelta
@@ -52,7 +51,10 @@ class AddNotificationCommand(BotCommand):
             return
 
         habit_list = "\n".join([f"{i+1}. {habit}" for i, habit in enumerate(habits)])
-        self.bot.bot.send_message(message.chat.id, f"Выберите привычку для добавления нотификатора:\n{habit_list}\n\nВведите время (в формате ЧЧ:ММ) и номер привычки (нотификатор будет работать по Московскому времени):")
+        self.bot.bot.send_message(message.chat.id, f"Выберите привычку для добавления нотификатора:\n{habit_list}\n\nВведите время (в формате ЧЧ:ММ) и номер привычки.\
+                                   (Нотификатор работает по Московскому времени,\
+                                   поэтому Вам придётся в зависимости от своего часового пояса отнять или прибавить время. \
+                                  \nПриносим свои извинения за доставленные неудобства!):")
         self.bot.bot.register_next_step_handler(message, self.save_notification)
 
     def save_notification(self, message):
@@ -93,7 +95,8 @@ class AddNotificationCommand(BotCommand):
         notifications = user_data['notifications']
         notifications.setdefault(user_id, []).append({'time': time_str, 'habit': habit})
         self.bot.save_user_data(user_id)
-        self.bot.bot.send_message(user_id, f"Нотификатор для '{habit}' установлен на {time_str}!")
+        self.bot.bot.send_message(user_id, f"Нотификатор для '{habit}' установлен на {time_str}!\
+                                  \nНе забудьте выполнить свою привычку!\nP.S. Кто выполняет привычки, тот кушает пельмени~_~")
 
 
 # Класс для добавления нового задания на день.
@@ -189,8 +192,9 @@ class HabitBot:
             for user_id, data in self.user_data.items():
                 for notification in data.get('notifications', {}).get(user_id, []):
                     if notification['time'] == now:
-                        self.bot.send_message(user_id, f"Время для привычки: {notification['habit']}")
-            time.sleep(60)
+                        self.bot.send_message(user_id, f"Пришло время для выполнения своей привычки: '{notification['habit']}'.\
+                                              \nP.S. Если выполнил привычку, то жди в своей жизни пельмени;)")
+            time.sleep(300)
 
     def clear_daily_tasks(self):
         # Метод очищает список ежедневных задач в полночь.
