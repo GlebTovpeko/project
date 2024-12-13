@@ -19,7 +19,7 @@ class StartCommand(BotCommand):
     def execute(self, message):
         # Метод выполняет команду /start.
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        markup.add('Добавить привычку', 'Добавить нотификатор', 'Добавить задание', 'Просмотреть задания', 'Просмотреть привычки', 'Команды')
+        markup.add('Добавить привычку', 'Добавить нотификатор', 'Добавить задание', 'Просмотреть задания', 'Просмотреть привычки', 'Информация по командам')
         self.bot.bot.send_message(message.chat.id, "Привет! Я помощник по формированию привычек и задач. Выберите действие:", reply_markup=markup)
 
 
@@ -174,7 +174,7 @@ class HabitBot:
             'Добавить задание': AddTaskCommand(self),
             'Просмотреть задания': ViewTasksCommand(self),
             'Просмотреть привычки': ViewHabitsNotificationsCommand(self),
-            'Команды': CommandsCommand(self),
+            'Информация по командам': CommandsCommand(self),
         }
         self.default_command = UnknownCommand(self)
 
@@ -194,7 +194,7 @@ class HabitBot:
                     if notification['time'] == now:
                         self.bot.send_message(user_id, f"Пришло время для выполнения своей привычки: '{notification['habit']}'.\
                                               \nP.S. Если выполнил привычку, то жди в своей жизни пельмени;)")
-            time.sleep(300)
+            time.sleep(60)
 
     def clear_daily_tasks(self):
         # Метод очищает список ежедневных задач в полночь.
